@@ -1,0 +1,2 @@
+- name: ensure apache is installed
+  apt: pkg=apache2 update_cache=yes state=installed 

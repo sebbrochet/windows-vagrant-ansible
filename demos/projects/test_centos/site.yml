@@ -1,5 +1,7 @@
 - hosts: vagrant-hosts
   user: root
+  roles:
+    - apache/centos
 
   tasks:
      - name: install tmux

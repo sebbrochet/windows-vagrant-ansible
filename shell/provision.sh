@@ -80,8 +80,21 @@ else
    exit 1
 fi
 
+if [ -d "/vagrant/.ansible" ]; then
+   echo "Updating copy of roles before running playbooks..."
+   rm -rf /etc/ansible/roles
+   mkdir -p /etc/ansible/roles
+   cp -rp /vagrant/.ansible/* /etc/ansible/roles
+else
+   rm -rf /etc/ansible/roles
+fi
+
 cd ${ANSIBLE_DIR}
 cp /vagrant/${ANSIBLE_HOSTS} ${TEMP_HOSTS} && chmod -x ${TEMP_HOSTS}
 echo "Running Ansible"
 bash -c "source hacking/env-setup && ansible-playbook /vagrant/${ANSIBLE_PLAYBOOK} --inventory-file=${TEMP_HOSTS} --connection=local"
 rm ${TEMP_HOSTS}
+
+if [ -d "/vagrant/.ansible" ]; then
+   rm -rf /vagrant/.ansible
+fi
