@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+parameters = {
+  "project"   => "vagrant-vm",
+  "memory"    => 2048,
+  "cpus"      => 1,
+  "provision_shell" => "../../../shell/provision.sh",
+  "ansible_host_file" => "vagrant.hosts",
+  "ansible_playbook" => "site.yml"
+}
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "debian/wheezy64"
+  config.vm.synced_folder ".", "/vagrant"
+
+  config.vm.hostname = parameters['project']
+  
+  config.vm.provision :shell do |sh|
+    sh.path = parameters['provision_shell']
+    sh.args = "debian " + parameters['ansible_playbook'] + " " + parameters['ansible_host_file']
+  end
+  
+end

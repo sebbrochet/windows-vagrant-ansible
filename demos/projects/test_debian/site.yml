@@ -1,0 +1,6 @@
+- hosts: vagrant-hosts
+  user: root
+
+  tasks:
+     - name: install tmux
+       apt: name="tmux" state=latest
