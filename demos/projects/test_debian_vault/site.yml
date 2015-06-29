@@ -1,0 +1,8 @@
+- hosts: vagrant-hosts
+  user: root
+  roles:
+    - apache/debian_vault
+
+  tasks:
+     - name: install tmux
+       apt: name="tmux" state=latest

@@ -24,40 +24,42 @@ An example Vagrantfile is below:
 
 # Configure some parameters here:
 
-parameters = {
+$parameters = {
   "project"   => "vagrant-vm",
   "memory"    => 2048,
   "cpus"      => 1,
-  "provision_shell" => "../../../shell/provision.sh",
-  "target_os" => "centos",
+  "provision_shell" => "../../../provision.sh",  
   "vagrant_box" => "hansode/centos-6.6-x86_64",
   "ansible_host_file" => "vagrant.hosts",
   "ansible_playbook" => "site.yml",
   "roles_dir" => "../../roles", # optional: remove key if you do not use an external `roles` directory
+  "vault_password_file" => "vault_pass.txt" # optional: remove key if you do not use vault-protected files
 }
-
-# Do not change code below
 
 work_dir=".ansible"
 require 'fileutils'
 FileUtils.rmtree work_dir
 
-if parameters.has_key?("roles_dir")
+if $parameters.has_key?("roles_dir")
   FileUtils::mkdir_p work_dir
-  FileUtils.copy_entry parameters['roles_dir'], work_dir
+  FileUtils.copy_entry $parameters['roles_dir'], work_dir
 end
 
 Vagrant.configure(2) do |config|
-  config.vm.box = parameters['vagrant_box']
+  config.vm.box = $parameters['vagrant_box']
   config.vm.synced_folder ".", "/vagrant"
 
-  config.vm.hostname = parameters['project']
+  config.vm.hostname = $parameters['project']
   
   config.vm.provision :shell do |sh|
-    sh.path = parameters['provision_shell']
-    sh.args = parameters['target_os'] + " " + parameters['ansible_playbook'] + " " + parameters['ansible_host_file']
+    sh.path = $parameters['provision_shell']
+
+    if $parameters.has_key?("vault_password_file")
+       sh.args = $parameters['ansible_playbook'] + " " + $parameters['ansible_host_file'] + " " + $parameters['vault_password_file']
+    else
+       sh.args = $parameters['ansible_playbook'] + " " + $parameters['ansible_host_file']
+    end
   end
-  
 end
 ```
 

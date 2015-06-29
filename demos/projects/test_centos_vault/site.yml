@@ -1,0 +1,8 @@
+- hosts: vagrant-hosts
+  user: root
+  roles:
+    - apache/centos_vault
+
+  tasks:
+     - name: install tmux
+       yum: name="tmux" state=latest

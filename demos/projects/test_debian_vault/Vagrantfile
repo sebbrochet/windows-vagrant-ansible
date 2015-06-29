@@ -7,11 +7,12 @@ $parameters = {
   "project"   => "vagrant-vm",
   "memory"    => 2048,
   "cpus"      => 1,
-  "provision_shell" => "../../../provision.sh",
-  "vagrant_box" => "hansode/centos-6.6-x86_64",
+  "provision_shell" => "../../../provision.sh",  
+  "vagrant_box" => "debian/wheezy64",
   "ansible_host_file" => "vagrant.hosts",
   "ansible_playbook" => "site.yml",
   "roles_dir" => "../../roles", # optional: remove key if you do not use an external `roles` directory
+  "vault_password_file" => "vault_pass.txt"
 }
 
 require '../common/ansible_provisionner'

@@ -1,0 +1,8 @@
+- name: include password
+  include_vars: password.yml
+
+- name: display password
+  debug: msg="Password is {{ mysql_root_password }}"
+
+- name: ensure apache is installed
+  yum: pkg=httpd state=installed 
